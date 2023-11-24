@@ -8,14 +8,28 @@ export default function FileUpload(props) {
   const [uploadedFiles, setUploadedFiles] = useState([]);
   const [fileToDelete, setFileToDelete] = useState(null);
   const [deleteConfirmationOpen, setDeleteConfirmationOpen] = useState(false);
+  const acceptedFileTypes = ['application/pdf', 'application/vnd.openxmlformats-officedocument.wordprocessingml.document'];
+  const [errorMessage, setErrorMessage] = useState('');
+
   const { getRootProps, getInputProps, open, isDragActive } = useDropzone({
     noClick: true,
     noKeyboard: true,
+    accept: acceptedFileTypes.join(','),
     onDrop: (files) => handleFileUpload(files),
   });
 
+
   const handleFileUpload = (files) => {
-    setUploadedFiles([...uploadedFiles, ...files]);
+        // Filter out files that are not of the accepted types
+        const invalidFiles = files.filter(file => !acceptedFileTypes.includes(file.type));
+    
+        if (invalidFiles.length > 0) {
+          // Set error message and prevent adding invalid files
+          setErrorMessage('Invalid file format. Please upload only PDF or DOCX files.');
+        } else {
+          setUploadedFiles([...uploadedFiles, ...files]);
+          setErrorMessage('');
+        }
   };
 
   const openDeleteConfirmation = (file) => {
@@ -142,6 +156,10 @@ export default function FileUpload(props) {
         <ul>{filesList}</ul>
         </Box>
       </Box>
+
+      {errorMessage && (
+        <Typography sx={{ color: 'red', marginTop: '10px' }}>{errorMessage}</Typography>
+      )}
 
       {canCompareSimilarities && (
         <Button
