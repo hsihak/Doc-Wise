@@ -150,7 +150,7 @@ export default function FileUpload(props) {
         <Box
         sx={{
             maxHeight: '200px', // Set the maximum height for the container
-            overflow: 'scroll',
+            overflow: 'auto',
             paddingInline: '30px'
         }}>
         <ul>{filesList}</ul>
