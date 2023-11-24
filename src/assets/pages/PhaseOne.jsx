@@ -1,6 +1,4 @@
 import React from 'react'
-import { Header } from '../components/Header/Header'
-import SubHeader from '../components/Header/SubHeader'
 import FileUpload from '../components/DropMenu/FileUpload'
 import { Box, Typography } from '@mui/material'
 
@@ -13,9 +11,6 @@ const PhaseOne = () => {
 
   return (
     <div>
-        <Header/>
-        {/* Sub header */}
-        <SubHeader/>
         {/* File Dropzone */}
         <Box
             sx={{
@@ -33,6 +28,7 @@ const PhaseOne = () => {
                 justifyContent: 'center',
             }}>
             <FileUpload onFileUpload={handleFileUpload}/>
+
         </Box>
     </div>
   )

@@ -1,22 +1,20 @@
 import React, { useState } from 'react';
 import { useDropzone } from 'react-dropzone';
 import { Box, Button, IconButton, Typography } from '@mui/material';
-import ClearIcon from '@mui/icons-material/Clear'; // Import the 'Clear' icon
+import ClearIcon from '@mui/icons-material/Clear';
 import Modal from '@mui/material/Modal';
 
 export default function FileUpload(props) {
   const [uploadedFiles, setUploadedFiles] = useState([]);
-  const [fileToDelete, setFileToDelete] = useState(null); // Track the file to delete
+  const [fileToDelete, setFileToDelete] = useState(null);
   const [deleteConfirmationOpen, setDeleteConfirmationOpen] = useState(false);
   const { getRootProps, getInputProps, open, isDragActive } = useDropzone({
-    // Disable click and keydown behavior
     noClick: true,
     noKeyboard: true,
     onDrop: (files) => handleFileUpload(files),
   });
 
   const handleFileUpload = (files) => {
-    // Do something with the files (e.g., upload to server)
     setUploadedFiles([...uploadedFiles, ...files]);
   };
 
@@ -43,14 +41,14 @@ export default function FileUpload(props) {
   };
 
   const canCompareSimilarities = uploadedFiles.length >= 2;
-  const isAtleastOneFileUploaded = uploadedFiles.length == 1;
+  const isAtLeastOneFileUploaded = uploadedFiles.length === 1;
 
-  const filesList = uploadedFiles.map((file) => (
+  const filesList = uploadedFiles.map((file, index) => (
     <Box
+      key={`${file.path}-${index}`} // Ensure unique key by appending index
       sx={{
         marginBlock: '10px',
       }}
-      key={file.path}
     >
       <li>
         <Box
@@ -72,7 +70,6 @@ export default function FileUpload(props) {
       </li>
     </Box>
   ));
-
   
 
   return (
@@ -88,14 +85,15 @@ export default function FileUpload(props) {
       <div {...getRootProps({ className: 'dropzone' })} style={dropzoneStyles}>
         <input {...getInputProps()} />
         {isDragActive ? (
-            <Box
+          <Box
             sx={{
-                display: 'flex',
-                alignItems: 'center',
-                justifyContent: 'center'
-            }}>
-                <p>Drop the files here ...</p>
-            </Box>
+              display: 'flex',
+              alignItems: 'center',
+              justifyContent: 'center',
+            }}
+          >
+            <p>Drop the files here ...</p>
+          </Box>
         ) : (
           <Box
             sx={{
@@ -105,11 +103,7 @@ export default function FileUpload(props) {
               alignItems: 'center',
             }}
           >
-            <img
-              src="src\assets\Drag-And-Drop.svg"
-              alt="Drag-And-Drop-Image"
-              width="100px"
-            />
+            <img src="src\assets\Drag-And-Drop.svg" alt="Drag-And-Drop-Image" width="100px" />
             <p>Or</p>
             <Button
               variant="contained"
@@ -135,95 +129,111 @@ export default function FileUpload(props) {
           width: '30%',
           display: 'flex',
           gap: '10px',
-          flexDirection: 'column'
+          flexDirection: 'column',
         }}
       >
         <h4>Files uploaded:</h4>
+        <Box
+        sx={{
+            maxHeight: '200px', // Set the maximum height for the container
+            overflow: 'scroll',
+            paddingInline: '30px'
+        }}>
         <ul>{filesList}</ul>
+        </Box>
       </Box>
 
-    {canCompareSimilarities && (
+      {canCompareSimilarities && (
         <Button
-      variant="contained"
-      sx={{
-        background: '#416E71',
+          variant="contained"
+          sx={{
+            background: '#416E71',
             color: 'white',
             border: '2px solid black',
+            marginTop: '30px',
             '&:hover': {
-          background: '#D3D9CE',
-        },}}
-      >Compare Similarities</Button>
-    ) 
-    }
+              background: '#D3D9CE',
+            },
+          }}
+        >
+          Compare Similarities
+        </Button>
+      )}
 
-    { isAtleastOneFileUploaded && (
-            <Box
-                sx={{
-                    padding: '30px',
-                    textAlign: 'center'
-                }}>
-                <Typography 
-                    sx={{
-                        color: 'red'
-                    }}>Please select at least two documents in order to compare their similarities.</Typography>
-                <Typography 
-                    sx={{
-                        color: 'red',
-                    }}>You can select as many files as you want.</Typography>
-            </Box>
+      {isAtLeastOneFileUploaded && (
+        <Box
+          sx={{
+            padding: '30px',
+            textAlign: 'center',
+          }}
+        >
+          <Typography sx={{ color: 'red' }}>
+            Please select at least two documents in order to compare their similarities.
+          </Typography>
+          <Typography sx={{ color: 'red' }}>
+            You can select as many files as you want.
+          </Typography>
+        </Box>
+      )}
 
-    )}
-
-    {/* Delete Confirmation Modal */}
-          <Modal
+      {/* Delete Confirmation Modal */}
+      <Modal
         open={deleteConfirmationOpen}
         onClose={closeDeleteConfirmation}
         aria-labelledby="delete-confirmation-title"
         aria-describedby="delete-confirmation-description"
       >
         <Box sx={modalStyles}>
-        <Box
-        sx={{
-            display: 'flex',
-            flexDirection: 'column',
-            gap: '30px'
-        }}>
-        <Typography
-        sx={{
-            textAlign: 'center'
-        }}>
-            Are you sure you want to delete <span className=' underline block text-center'>
-                {fileToDelete ? fileToDelete.path : ''} ?
-                </span>
-        </Typography>
-        <Box
-        sx={{
-            display: 'flex',
-            justifyContent: 'space-between',
-        }}>
-          <Button 
+          <Box
+            sx={{
+              display: 'flex',
+              flexDirection: 'column',
+              gap: '30px',
+            }}
+          >
+            <Typography sx={{ textAlign: 'center' }}>
+              Are you sure you want to delete{' '}
+              <span className="underline block text-center">
+                {fileToDelete ? fileToDelete.path : ''}
+              </span>
+              ?
+            </Typography>
+            <Box
+              sx={{
+                display: 'flex',
+                justifyContent: 'space-between',
+              }}
+            >
+              <Button
                 variant="contained"
                 sx={{
                   background: '#ffffff',
-                      color: 'black',
-                      border: '1px solid black',
-                      '&:hover': {
+                  color: 'black',
+                  border: '1px solid black',
+                  '&:hover': {
                     background: '#D3D9CE',
-                  },}}
-          onClick={closeDeleteConfirmation}>Cancel</Button>
-          <Button 
-                          variant="contained"
-                          sx={{
-                            background: '#416E71',
-                                color: 'white',
-                                border: '1px solid black',
-                                '&:hover': {
-                              background: '#D3D9CE',
-                            },}}
-          onClick={confirmDelete}>Delete</Button>
-        </Box>
-        </Box>
-
+                  },
+                }}
+                onClick={closeDeleteConfirmation}
+              >
+                Cancel
+              </Button>
+              <Button
+                variant="contained"
+                sx={{
+                  background: '#416E71',
+                  color: 'white',
+                  border: '1px solid black',
+                  '&:hover': {
+                    background: '#D3D9CE',
+                  },
+                }}
+                onClick={confirmDelete}
+              >
+                Delete
+              </Button>
+            </Box>
+          </Box>
         </Box>
       </Modal>
     </Box>
@@ -237,7 +247,7 @@ const dropzoneStyles = {
   borderWidth: '4px',
   borderRadius: '4px',
   borderStyle: 'dashed',
-  borderColor: 'black', // Set the dashed line color to black
+  borderColor: 'black',
   backgroundColor: '#fafafa',
   color: 'black',
   outline: 'none',
@@ -245,15 +255,16 @@ const dropzoneStyles = {
 };
 
 const modalStyles = {
-    position: 'absolute',
-    top: '50%',
-    left: '50%',
-    transform: 'translate(-50%, -50%)',
-    width: 400,
-    bgcolor: 'background.paper',
-    border: '2px solid #000',
-    boxShadow: 24,
-    pt: 2,
-    px: 4,
-    pb: 3,
+  position: 'absolute',
+  top: '50%',
+  left: '50%',
+  transform: 'translate(-50%, -50%)',
+  width: 400,
+  bgcolor: 'background.paper',
+  border: '2px solid #000',
+  boxShadow: 24,
+  pt: 2,
+  px: 4,
+  pb: 3,
   };
+ 

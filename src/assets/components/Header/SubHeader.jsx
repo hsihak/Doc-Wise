@@ -2,6 +2,7 @@ import React, { useState } from 'react';
 import AppBar from '@mui/material/AppBar';
 import Tabs from '@mui/material/Tabs';
 import Tab from '@mui/material/Tab';
+import { Link } from 'react-router-dom';
 
 const SubHeader = () => {
   const [value, setValue] = useState(0);
@@ -31,6 +32,8 @@ const SubHeader = () => {
         }}
       >
         <Tab
+          component={Link} 
+          to="/phase-one"
           label="Similarity Comparison"
           sx={{
             color: value === 0 ? 'white' : 'black',
@@ -41,6 +44,8 @@ const SubHeader = () => {
           }}
         />
         <Tab
+          component={Link}
+          to="/phase-two"
           label="Difference Highlighter"
           sx={{
             color: value === 1 ? 'white' : 'black',
@@ -53,6 +58,8 @@ const SubHeader = () => {
           }}
         />
         <Tab
+          component={Link}
+          to="/phase-three"
           label="Summaries Generator"
           sx={{
             color: value === 2 ? 'white' : 'black',
