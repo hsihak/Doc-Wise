@@ -270,7 +270,14 @@ const dropzoneStyles = {
   color: 'black',
   outline: 'none',
   transition: 'border .24s ease-in-out',
+
+  // Material-UI responsive styles
+  '@media screen and (minWidth: 200px) and (maxWidth: 767px)': {
+    width: '80%', // Adjust the width for smaller screens
+    height: '150px', // Adjust the height for smaller screens
+  },
 };
+
 
 const modalStyles = {
   position: 'absolute',
