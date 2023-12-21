@@ -9,16 +9,20 @@ export default function FileUpload(props) {
   const [uploadedFiles, setUploadedFiles] = useState([]);
   const [fileToDelete, setFileToDelete] = useState(null);
   const [deleteConfirmationOpen, setDeleteConfirmationOpen] = useState(false);
+  const [responseMsg, setResponseMsg] = useState('');
+  const [isSubmitting, setIsSubmitting] = useState(false);
   const [errorMessage, setErrorMessage] = useState('');
-
+  const [similarityScores, setSimilarityScores] = useState(null);
+  const [isLoading, setIsLoading] = useState(false);
+  const acceptedFileTypes = {
+    'application/pdf': ['.pdf'],
+    'application/vnd.openxmlformats-officedocument.wordprocessingml.document': ['.docx'],
+    'application/msword': ['.doc']
+  };
   const { getRootProps, getInputProps, open, isDragActive } = useDropzone({
     noClick: true,
     noKeyboard: true,
-    accept: {
-      'application/pdf': ['.pdf'],
-      'application/vnd.openxmlformats-officedocument.wordprocessingml.document': ['.docx'],
-      'application/msword': ['.doc']
-    },
+    accept: acceptedFileTypes,
     onDrop: (files) => handleFileUpload(files),
   });
 
@@ -27,52 +31,78 @@ export default function FileUpload(props) {
     const filesArray = Array.from(files);
   
     // Filter out files that are not of the accepted types
-    const validFiles = filesArray.filter(file => acceptedFileTypes.includes(file.type));
+    const validFiles = filesArray.filter(file => {
+      const fileType = file.type;
+      const fileExtension = file.name.split('.').pop();
+      return acceptedFileTypes[fileType] && acceptedFileTypes[fileType].includes(`.${fileExtension}`);
+    });
   
     if (validFiles.length !== filesArray.length) {
-      // Set error message for invalid files
-      setErrorMessage('Invalid file format. Please upload only PDF or DOCX files.');
+      setErrorMessage('Invalid file format. Please upload only PDF, DOCX, or DOC files.');
     }
   
     // Update the state only with valid files
-    setUploadedFiles([...uploadedFiles, ...validFiles]);
+    setUploadedFiles(prevFiles => [...prevFiles, ...validFiles]);
   };
   
   
 
   const submitHandler = async (e) => {
     e.preventDefault();
-    const formData = new FormData();
 
-    for (let i = 0; i < uploadedFiles.length; i++) {
-      formData.append('files[]', uploadedFiles[i]);
-    }
+    setIsSubmitting(true);
 
-    try {
-      const response = await axios.post('http://127.0.0.1:5000/upload', formData);
+    setTimeout(async () => {
 
-      if (response.status === 201) {
-        setResponseMsg({
-          status: response.data.status,
-          message: response.data.message,
-        });
+      
+      try {
+        const formData = new FormData();
+  
+        for (let i = 0; i < uploadedFiles.length; i++) {
+          console.log(`Uploading file: ${uploadedFiles[i].name}, Size: ${uploadedFiles[i].size}`);
+          formData.append('file', uploadedFiles[i]);
+        }
 
-        setTimeout(() => {
-          setUploadedFiles([]);
-          setResponseMsg('');
-        }, 5000); // Clear after 5 seconds
+        const config = {
+          headers: {
+            'Content-Type': 'multipart/form-data'
+          }
+        };
 
-        alert('Successfully Uploaded');
-      }
-    } catch (error) {
-      console.error(error);
-      if (error.response) {
-        console.log(error.response);
-        if (error.response.status === 401) {
-          alert('Invalid credentials');
+        for (let [key, value] of formData.entries()) { 
+          console.log(key, value);
+        }
+
+        const response = await axios.post('http://127.0.0.1:5000/upload', formData, config);
+  
+        if (response.status === 201) {
+          setResponseMsg({
+            status: response.data.status,
+            message: response.data.message,
+          });
+  
+          setTimeout(() => {
+            setUploadedFiles([]);
+            setResponseMsg('');
+          }, 5000); // Clear after 5 seconds
+  
+          alert('Successfully Uploaded');
+        }
+      } catch (error) {
+        console.error(error);
+        if (error.response) {
+          console.log(error.response);
+          if (error.response.status === 401) {
+            alert('Invalid credentials');
+          }
         }
       }
-    }}
+      
+    
+      setIsSubmitting(false); // Hide spinner after processing
+    }, 3000);
+
+}
 
   const openDeleteConfirmation = (file) => {
     setFileToDelete(file);
@@ -203,23 +233,36 @@ export default function FileUpload(props) {
         <Typography sx={{ color: 'red', marginTop: '10px' }}>{errorMessage}</Typography>
       )}
 
-      {canCompareSimilarities && (
-        <Button
-          variant="contained"
-          sx={{
-            background: '#416E71',
-            color: 'white',
-            border: '2px solid black',
-            marginTop: '30px',
-            '&:hover': {
-              background: '#D3D9CE',
-            },
-          }}
-          onClick={submitHandler}
-        >
-          Compare Similarities
-        </Button>
-      )}
+
+      <div className='grid grid-cols-5 mt-5'>
+        <div className=' col-span-1'>
+          {isSubmitting && (
+            <div className="flex">
+              <div className="spinner-border animate-spin inline-block w-8 h-8 border-4 rounded-full" role="status">
+                <img src="src\assets\bars-rotate-fade.svg" alt="bars-rotate-fade spinner"/>
+              </div>
+            </div>
+          )}
+        </div>
+
+        <div className=' col-span-3'>
+          {canCompareSimilarities && (
+            <Button
+              variant="contained"
+              sx={{
+                background: '#93C448',
+                color: 'white',
+                '&:hover': {
+                  background: '#7d9c4f',
+                },
+              }}
+              onClick={submitHandler}
+            >
+              Compare Similarities
+            </Button>
+          )}
+        </div>
+      </div>
 
       {isAtLeastOneFileUploaded && (
         <Box
@@ -253,11 +296,13 @@ export default function FileUpload(props) {
             }}
           >
             <Typography sx={{ textAlign: 'center' }}>
-              Are you sure you want to delete{' '}
-              <span className="underline block text-center">
-                {fileToDelete ? fileToDelete.path : ''}
-              </span>
-              ?
+              Are you sure you want to delete
+              <div className='block'>
+                <span className="underline text-center font-semibold">
+                  {fileToDelete ? fileToDelete.path : ''}
+                </span>
+                <span> ?</span>
+              </div>
             </Typography>
             <Box
               sx={{
@@ -282,9 +327,8 @@ export default function FileUpload(props) {
               <Button
                 variant="contained"
                 sx={{
-                  background: '#416E71',
+                  background: '#93C448',
                   color: 'white',
-                  border: '1px solid black',
                   '&:hover': {
                     background: '#D3D9CE',
                   },
@@ -329,10 +373,10 @@ const modalStyles = {
   transform: 'translate(-50%, -50%)',
   width: 400,
   bgcolor: 'background.paper',
-  border: '2px solid #000',
   boxShadow: 24,
   pt: 2,
   px: 4,
   pb: 3,
+  borderRadius: '10px'
   };
  
