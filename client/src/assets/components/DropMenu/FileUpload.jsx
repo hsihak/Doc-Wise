@@ -1,36 +1,78 @@
-import React, { useState } from 'react';
+import React, { useState, useRef } from 'react';
 import { useDropzone } from 'react-dropzone';
 import { Box, Button, IconButton, Typography } from '@mui/material';
 import ClearIcon from '@mui/icons-material/Clear';
 import Modal from '@mui/material/Modal';
+import axios from "axios";
 
 export default function FileUpload(props) {
   const [uploadedFiles, setUploadedFiles] = useState([]);
   const [fileToDelete, setFileToDelete] = useState(null);
   const [deleteConfirmationOpen, setDeleteConfirmationOpen] = useState(false);
-  const acceptedFileTypes = ['application/pdf', 'application/vnd.openxmlformats-officedocument.wordprocessingml.document'];
   const [errorMessage, setErrorMessage] = useState('');
 
   const { getRootProps, getInputProps, open, isDragActive } = useDropzone({
     noClick: true,
     noKeyboard: true,
-    accept: acceptedFileTypes.join(','),
+    accept: {
+      'application/pdf': ['.pdf'],
+      'application/vnd.openxmlformats-officedocument.wordprocessingml.document': ['.docx'],
+      'application/msword': ['.doc']
+    },
     onDrop: (files) => handleFileUpload(files),
   });
 
-
   const handleFileUpload = (files) => {
-        // Filter out files that are not of the accepted types
-        const invalidFiles = files.filter(file => !acceptedFileTypes.includes(file.type));
-    
-        if (invalidFiles.length > 0) {
-          // Set error message and prevent adding invalid files
-          setErrorMessage('Invalid file format. Please upload only PDF or DOCX files.');
-        } else {
-          setUploadedFiles([...uploadedFiles, ...files]);
-          setErrorMessage('');
-        }
+    // Convert the files object to an array
+    const filesArray = Array.from(files);
+  
+    // Filter out files that are not of the accepted types
+    const validFiles = filesArray.filter(file => acceptedFileTypes.includes(file.type));
+  
+    if (validFiles.length !== filesArray.length) {
+      // Set error message for invalid files
+      setErrorMessage('Invalid file format. Please upload only PDF or DOCX files.');
+    }
+  
+    // Update the state only with valid files
+    setUploadedFiles([...uploadedFiles, ...validFiles]);
   };
+  
+  
+
+  const submitHandler = async (e) => {
+    e.preventDefault();
+    const formData = new FormData();
+
+    for (let i = 0; i < uploadedFiles.length; i++) {
+      formData.append('files[]', uploadedFiles[i]);
+    }
+
+    try {
+      const response = await axios.post('http://127.0.0.1:5000/upload', formData);
+
+      if (response.status === 201) {
+        setResponseMsg({
+          status: response.data.status,
+          message: response.data.message,
+        });
+
+        setTimeout(() => {
+          setUploadedFiles([]);
+          setResponseMsg('');
+        }, 5000); // Clear after 5 seconds
+
+        alert('Successfully Uploaded');
+      }
+    } catch (error) {
+      console.error(error);
+      if (error.response) {
+        console.log(error.response);
+        if (error.response.status === 401) {
+          alert('Invalid credentials');
+        }
+      }
+    }}
 
   const openDeleteConfirmation = (file) => {
     setFileToDelete(file);
@@ -173,6 +215,7 @@ export default function FileUpload(props) {
               background: '#D3D9CE',
             },
           }}
+          onClick={submitHandler}
         >
           Compare Similarities
         </Button>
