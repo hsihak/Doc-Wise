@@ -148,9 +148,9 @@ def main():
     average_similarity_df = pd.DataFrame(average_similarity_scores, index=temp_file_paths, columns=temp_file_paths)
 
     # Save the dataframe to an Excel file
-    average_similarity_df.to_excel('C:/Users/Hangsihak Sin/OneDrive/Documents/School/Doc-Wise/backend/phase_one/similarity_scores.xlsx')
+    average_similarity_df.to_excel('C:/Users/Hangsihak Sin/OneDrive/Documents/School/Doc-Wise/client/src/assets/phase-one/static/similarity_scores.xlsx')
 
-    output_csv_path = "C:/Users/Hangsihak Sin/OneDrive/Documents/School/Doc-Wise/backend/phase_one/threshold_similarity_scores.csv"
+    output_csv_path = "C:/Users/Hangsihak Sin/OneDrive/Documents/School/Doc-Wise/client/src/assets/phase-one/static/threshold_similarity_scores.csv"
     phaseone_semanticsimilarity.output_to_csv(average_similarity_scores, temp_file_paths, output_csv_path)
 
 if __name__ == "__main__":

@@ -1,11 +1,11 @@
 import React from 'react'
-import FileUpload from '../components/DropMenu/FileUpload'
+
 import { Box, Typography } from '@mui/material'
+import FileUpload from '../components/DropMenu/FileUpload';
 
 const PhaseOne = () => {
 
     const handleFileUpload = files => {
-        // Handle file upload logic here
         console.log('Uploaded files:', files);
       };
 
@@ -28,7 +28,6 @@ const PhaseOne = () => {
                 justifyContent: 'center',
             }}>
             <FileUpload onFileUpload={handleFileUpload}/>
-
         </Box>
     </div>
   )

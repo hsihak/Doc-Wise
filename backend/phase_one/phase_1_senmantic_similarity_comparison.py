@@ -133,10 +133,10 @@ print("\nAverage Similarity Scores:")
 print(average_similarity_scores)
 
 # Create a DataFrame for better visualization
-average_similarity_df = pd.DataFrame(average_similarity_scores, index=uploaded_files, columns=uploaded_files)
+# average_similarity_df = pd.DataFrame(average_similarity_scores, index=uploaded_files, columns=uploaded_files)
 
-# Save the dataframe to an Excel file
-average_similarity_df.to_excel('similarity_scores.xlsx')
+# # Save the dataframe to an Excel file
+# average_similarity_df.to_excel('similarity_scores.xlsx')
 
 # Function to output similarity scores in a threshold-based CSV format.
 def output_to_csv(similarity_scores, uploaded_files, output_csv_path):

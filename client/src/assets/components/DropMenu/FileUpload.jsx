@@ -15,6 +15,7 @@ export default function FileUpload(props) {
   const [errorMessage, setErrorMessage] = useState('');
   const [similarityScores, setSimilarityScores] = useState(null);
   const [isLoading, setIsLoading] = useState(false);
+  const [isUploadSuccessful, setIsUploadSuccessful] = useState(false);
   const acceptedFileTypes = {
     'application/pdf': ['.pdf'],
     'application/vnd.openxmlformats-officedocument.wordprocessingml.document': ['.docx'],
@@ -75,6 +76,7 @@ export default function FileUpload(props) {
           setTimeout(() => {
             // setUploadedFiles([]);
             setResponseMsg('');
+            setIsUploadSuccessful(true);
           }, 5000); // Clear after 5 seconds
   
           alert('Successfully Uploaded');
@@ -252,7 +254,8 @@ export default function FileUpload(props) {
               >
                 Compare Similarities
               </Button>
-              <Overview/>
+              {/* Conditional rendering of Overview */}
+              {isUploadSuccessful && <Overview areFilesAvailable={isUploadSuccessful} />}  
             </div>
           )}
 
