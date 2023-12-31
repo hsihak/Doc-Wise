@@ -4,6 +4,7 @@ import { Box, Button, IconButton, Typography } from '@mui/material';
 import ClearIcon from '@mui/icons-material/Clear';
 import Modal from '@mui/material/Modal';
 import axios from "axios";
+import Overview from '../Overview/Overview';
 
 export default function FileUpload(props) {
   const [uploadedFiles, setUploadedFiles] = useState([]);
@@ -14,6 +15,7 @@ export default function FileUpload(props) {
   const [errorMessage, setErrorMessage] = useState('');
   const [similarityScores, setSimilarityScores] = useState(null);
   const [isLoading, setIsLoading] = useState(false);
+  const [isUploadSuccessful, setIsUploadSuccessful] = useState(false);
   const acceptedFileTypes = {
     'application/pdf': ['.pdf'],
     'application/vnd.openxmlformats-officedocument.wordprocessingml.document': ['.docx'],
@@ -63,17 +65,7 @@ export default function FileUpload(props) {
           formData.append('file', uploadedFiles[i]);
         }
 
-        const config = {
-          headers: {
-            'Content-Type': 'multipart/form-data'
-          }
-        };
-
-        for (let [key, value] of formData.entries()) { 
-          console.log(key, value);
-        }
-
-        const response = await axios.post('http://127.0.0.1:5000/upload', formData, config);
+        const response = await axios.post('http://127.0.0.1:5000/upload', formData);
   
         if (response.status === 201) {
           setResponseMsg({
@@ -82,8 +74,9 @@ export default function FileUpload(props) {
           });
   
           setTimeout(() => {
-            setUploadedFiles([]);
+            // setUploadedFiles([]);
             setResponseMsg('');
+            setIsUploadSuccessful(true);
           }, 5000); // Clear after 5 seconds
   
           alert('Successfully Uploaded');
@@ -247,20 +240,25 @@ export default function FileUpload(props) {
 
         <div className=' col-span-3'>
           {canCompareSimilarities && (
-            <Button
-              variant="contained"
-              sx={{
-                background: '#93C448',
-                color: 'white',
-                '&:hover': {
-                  background: '#7d9c4f',
-                },
-              }}
-              onClick={submitHandler}
-            >
-              Compare Similarities
-            </Button>
+            <div>
+              <Button
+                variant="contained"
+                sx={{
+                  background: '#93C448',
+                  color: 'white',
+                  '&:hover': {
+                    background: '#7d9c4f',
+                  },
+                }}
+                onClick={submitHandler}
+              >
+                Compare Similarities
+              </Button>
+              {/* Conditional rendering of Overview */}
+              {isUploadSuccessful && <Overview areFilesAvailable={isUploadSuccessful} />}  
+            </div>
           )}
+
         </div>
       </div>
 
