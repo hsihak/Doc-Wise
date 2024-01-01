@@ -1,7 +1,7 @@
 import React from 'react'
 
 import { Box, Typography } from '@mui/material'
-import FileUpload from '../components/DropMenu/FileUpload';
+import FileUpload from '../containers/FileUpload/FileUpload';
 
 const PhaseOne = () => {
 

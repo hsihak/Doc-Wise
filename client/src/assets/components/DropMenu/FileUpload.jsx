@@ -249,6 +249,7 @@ export default function FileUpload(props) {
                   '&:hover': {
                     background: '#7d9c4f',
                   },
+                  borderRadius: '10px'
                 }}
                 onClick={submitHandler}
               >

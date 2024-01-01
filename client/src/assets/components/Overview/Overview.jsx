@@ -1,14 +1,15 @@
 import React, { useState, useEffect } from 'react';
 import Papa from 'papaparse';
 import * as XLSX from 'xlsx';
+import { IoChevronBackCircle } from "react-icons/io5"
 
 const Overview = ({ areFilesAvailable }) => {
   const [data, setData] = useState([]);
   const [currentSlideIndex, setCurrentSlideIndex] = useState(0);
   const length = 2;
 
-  const Threshold_Similarity_Scores_CSV_FilePath = '/src/assets/phase-one/static/threshold_similarity_scores.csv';
-  const Similarity_Scores_XLSX_FilePath = '/src/assets/phase-one/static/similarity_scores.xlsx';
+  const Threshold_Similarity_Scores_CSV_FilePath = '/src/assets/storage/phase-one/static/threshold_similarity_scores.csv';
+  const Similarity_Scores_XLSX_FilePath = '/src/assets/storage/phase-one/static/similarity_scores.xlsx';
 
   const handlePrevious = () => {
     const newIndex = currentSlideIndex - 1;
@@ -93,7 +94,8 @@ const Overview = ({ areFilesAvailable }) => {
 
   return (
     <>
-      <div className="overflow-x-auto">
+      <div className="overflow-x-auto flex relative">
+        <IoChevronBackCircle onClick={handlePrevious} className='cursor-pointer flex absolute bottom-1/2'/>
         <table className='min-w-full table-auto border-collapse border border-gray-300'>
           <thead className='bg-gray-100'>
             <tr>
@@ -104,9 +106,10 @@ const Overview = ({ areFilesAvailable }) => {
             {renderTableRows()}
           </tbody>
         </table>
+        <IoChevronBackCircle onClick={handlePrevious} className='cursor-pointer flex flex-row-reverse absolute bottom-1/2 right-3/4'/>
       </div>
-      <button onClick={handlePrevious}>Previous</button>
-      <button onClick={handleNext}>Next</button>
+      {/* <button onClick={handlePrevious}>Previous</button>
+      <button onClick={handleNext}>Next</button> */}
       <p>{currentSlideIndex}</p>
     </>
   );
