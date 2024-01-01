@@ -10,7 +10,7 @@ from backend.phase_one.phase_1_senmantic import main
 app = Flask(__name__)
 CORS(app, supports_credentials=True)
 
-UPLOAD_FOLDER = '../backend/phase_one/static/content/temp_files/'
+UPLOAD_FOLDER = '../backend/phase_one/temp_files/'
 app.config['UPLOAD_FOLDER'] = UPLOAD_FOLDER
 
 ALLOWED_EXTENSIONS = set(['doc', 'docx', 'pdf'])

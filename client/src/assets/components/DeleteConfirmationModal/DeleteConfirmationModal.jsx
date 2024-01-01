@@ -17,12 +17,64 @@ const modalStyles = {
 
 function DeleteConfirmationModal({ open, onClose, onConfirm, fileToDelete }) {
     return (
-        <Modal open={open} onClose={onClose}>
+        <Modal 
+            open={open} 
+            onClose={onClose}
+            aria-labelledby="delete-confirmation-title"
+            aria-describedby="delete-confirmation-description"
+        >
             <Box sx={modalStyles}>
-                <Typography>Are you sure you want to delete this file?</Typography>
-                <Typography>{fileToDelete ? fileToDelete.name : ''}</Typography>
-                <Button onClick={onClose}>Cancel</Button>
-                <Button onClick={() => onConfirm(fileToDelete)}>Delete</Button>
+                <Box
+                    sx={{
+                    display: 'flex',
+                    flexDirection: 'column',
+                    gap: '30px',
+                    }}
+                >
+                    <Typography sx={{ textAlign: 'center' }}>
+                    Are you sure you want to delete
+                    <div className='block'>
+                        <span className="underline text-center font-semibold">
+                        {fileToDelete ? fileToDelete.path : ''}
+                        </span>
+                        <span> ?</span>
+                    </div>
+                    </Typography>
+                    <Box
+                    sx={{
+                        display: 'flex',
+                        justifyContent: 'space-between',
+                    }}
+                    >
+                        <Button
+                            variant="contained"
+                            sx={{
+                            background: '#ffffff',
+                            color: 'black',
+                            border: '1px solid black',
+                            '&:hover': {
+                                background: '#D3D9CE',
+                            },
+                            }}
+                            onClick={onClose}
+                        >
+                            Cancel
+                        </Button>
+                        <Button
+                            variant="contained"
+                            sx={{
+                            background: '#93C448',
+                            color: 'white',
+                            '&:hover': {
+                                background: '#D3D9CE',
+                            },
+                            }}
+                            onClick={() => onConfirm(fileToDelete)}
+                        >
+                            Delete
+                        </Button>
+                    </Box>
+                </Box>
             </Box>
         </Modal>
     );

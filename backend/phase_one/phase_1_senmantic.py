@@ -128,7 +128,7 @@ class PhaseOneSemanticSimilarity:
 def main():
     phaseone_semanticsimilarity = PhaseOneSemanticSimilarity()
 
-    temp_dir = "C:/Users/Hangsihak Sin/OneDrive/Documents/School/Doc-Wise/backend/phase_one/static/content/temp_files"
+    temp_dir = "C:/Users/Hangsihak Sin/OneDrive/Documents/School/Doc-Wise/backend/phase_one/temp_files"
     os.makedirs(temp_dir, exist_ok=True)
     temp_file_paths = [os.path.join(temp_dir, file) for file in os.listdir(temp_dir)
                        if file.endswith(".pdf") or file.endswith(".docx")]
@@ -148,9 +148,9 @@ def main():
     average_similarity_df = pd.DataFrame(average_similarity_scores, index=temp_file_paths, columns=temp_file_paths)
 
     # Save the dataframe to an Excel file
-    average_similarity_df.to_excel('C:/Users/Hangsihak Sin/OneDrive/Documents/School/Doc-Wise/client/src/assets/phase-one/static/similarity_scores.xlsx')
+    average_similarity_df.to_excel('C:/Users/Hangsihak Sin/OneDrive/Documents/School/Doc-Wise/client/src/assets/storage/phase-one/static/similarity_scores.xlsx')
 
-    output_csv_path = "C:/Users/Hangsihak Sin/OneDrive/Documents/School/Doc-Wise/client/src/assets/phase-one/static/threshold_similarity_scores.csv"
+    output_csv_path = "C:/Users/Hangsihak Sin/OneDrive/Documents/School/Doc-Wise/client/src/assets/storage/phase-one/static/threshold_similarity_scores.csv"
     phaseone_semanticsimilarity.output_to_csv(average_similarity_scores, temp_file_paths, output_csv_path)
 
 if __name__ == "__main__":

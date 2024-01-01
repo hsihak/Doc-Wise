@@ -1,11 +1,21 @@
 import React from 'react';
-import { Typography } from '@mui/material';
+import { Typography, Box } from '@mui/material';
 
 function ErrorMessage({ message }) {
     return (
-        <Typography sx={{ color: 'red', marginTop: '10px' }}>
-            {message}
-        </Typography>
+        <Box
+            sx={{
+            padding: '30px',
+            textAlign: 'center',
+            }}
+        >
+            <Typography sx={{ color: 'red' }}>
+            Please select at least two documents in order to compare their similarities.
+            </Typography>
+            <Typography sx={{ color: 'red' }}>
+            You can select as many files as you want.
+            </Typography>
+      </Box>
     );
 }
 

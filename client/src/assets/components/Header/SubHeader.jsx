@@ -37,9 +37,9 @@ const SubHeader = () => {
           label="Similarity Comparison"
           sx={{
             color: value === 0 ? 'white' : 'black',
-            backgroundColor: value === 0 ? '#E02B03' : 'inherit',
+            backgroundColor: value === 0 ? '#F29229' : 'inherit',
             '&:hover': {
-              backgroundColor: value === 0 ? 'orange' : 'inherit',
+              backgroundColor: value === 0 ? '#F2A829' : 'inherit',
             },
           }}
         />
@@ -49,9 +49,9 @@ const SubHeader = () => {
           label="Difference Highlighter"
           sx={{
             color: value === 1 ? 'white' : 'black',
-            backgroundColor: value === 1 ? '#E02B03' : 'inherit',
+            backgroundColor: value === 1 ? '#F29229' : 'inherit',
             '&:hover': {
-              backgroundColor: value === 1 ? 'orange' : 'inherit',
+              backgroundColor: value === 1 ? '#F2A829' : 'inherit',
             },
             borderLeft: '1px solid black', // Add a black border line to the left
             borderRight: '1px solid black', // Add a black border line to the right
@@ -63,9 +63,9 @@ const SubHeader = () => {
           label="Summaries Generator"
           sx={{
             color: value === 2 ? 'white' : 'black',
-            backgroundColor: value === 2 ? '#E02B03' : 'inherit',
+            backgroundColor: value === 2 ? '#F29229' : 'inherit',
             '&:hover': {
-              backgroundColor: value === 2 ? 'orange' : 'inherit',
+              backgroundColor: value === 2 ? '#F2A829' : 'inherit',
             },
           }}
         />

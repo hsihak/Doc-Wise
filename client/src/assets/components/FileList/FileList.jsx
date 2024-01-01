@@ -2,11 +2,11 @@ import React from 'react';
 import { Box, IconButton } from '@mui/material';
 import ClearIcon from '@mui/icons-material/Clear';
 
-function FileList({ files, onFileDelete }) {
+function FileList({ uploadedFiles, openFileDeleteConfirmation }) {
     return (
         <Box>
             <ul>
-                {files.map((file, index) => (
+                {uploadedFiles.map((file, index) => (
                     <Box 
                         key={`${file.path}-${index}`}
                         sx={{
@@ -26,7 +26,7 @@ function FileList({ files, onFileDelete }) {
                             }}
                             >
                             {file.path}
-                            <IconButton onClick={() => onFileDelete(file)}>
+                            <IconButton onClick={() => openFileDeleteConfirmation(file)}>
                                 <ClearIcon />
                             </IconButton>
                             </Box>
