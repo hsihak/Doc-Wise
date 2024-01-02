@@ -1,10 +1,11 @@
-from flask import request, Flask, json, jsonify
+from flask import request, Flask, json, jsonify, send_from_directory
 import sys
 sys.path.append('C:/Users/Hangsihak Sin/OneDrive/Documents/School/Doc-Wise/')
 import os
 import urllib.request
 from werkzeug.utils import secure_filename
 from flask_cors import CORS
+
 from backend.phase_one.phase_1_senmantic import main
 
 app = Flask(__name__)
@@ -53,3 +54,12 @@ def upload_file():
         return jsonify({"message": "Files successfully uploaded", "status": "success"}), 201
     else:
         return jsonify({"message": "No valid files to upload", "status": "failed"}), 400
+
+@app.route('/download/<filename>', methods=['GET'])
+def download_file(filename):
+    try:
+        safe_filename = secure_filename(filename)
+
+        return send_from_directory(app.config['UPLOAD_FOLDER'], safe_filename, as_attachment=True)
+    except:
+        return jsonify({"message": "File not found", "status": "failed"}), 404

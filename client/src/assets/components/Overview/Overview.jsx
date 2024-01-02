@@ -68,13 +68,9 @@ const Overview = ({ areFilesAvailable }) => {
   const renderTableHeaders = () => {
     if (data.length > 0) {
       const columnNames = Object.keys(data[0]);
-      if (columnNames.length === 0) {
-        // If there are no column names, create a placeholder
-        return <th className='border border-gray-300 px-4 py-2 text-left text-gray-600'>Column 1</th>;
-      }
-      return Object.keys(data[0]).map((key, index) => (
+      return columnNames.map((key, index) => (
         <th key={index} className='border border-gray-300 px-4 py-2 text-left text-gray-600'>
-          {key}
+          {key || <span className='text-center'>—</span>} {/* Render a dash if the key is empty */}
         </th>
       ));
     }
@@ -85,13 +81,15 @@ const Overview = ({ areFilesAvailable }) => {
     return data.map((row, index) => (
       <tr key={index} className={`${index % 2 === 0 ? 'bg-white' : 'bg-gray-50'}`}>
         {Object.values(row).map((value, idx) => (
-          <td key={idx} className="border border-gray-300 px-4 py-2">
-            {value}
+          <td key={idx} className="border border-gray-300 px-4 py-2 text-center">
+            {value !== undefined && value !== null ? value : '—'} {/* Render a dash if the value is empty */}
           </td>
         ))}
       </tr>
     ));
   };
+  
+  
 
   return (
     <div className='w-full'>
@@ -115,8 +113,8 @@ const Overview = ({ areFilesAvailable }) => {
             </Box>
       <div className="flex items-center">
         <IoChevronBackCircle onClick={handlePrevious} className='cursor-pointer text-2xl text-blue-500 flex-shrink-0' style={{ flexBasis: '2.5vw' }}/>
-        <div className='flex overflow-auto border border-black rounded-xl'>
-          <div className=''>
+        <div className='flex overflow-auto border-4 border-black rounded-xl'>
+          <div className='rounded-xl'> 
             <table className='w-[60vw] table-auto border-collapse border border-gray-300 relative'>
               <thead className='bg-gray-100'>
                 <tr>

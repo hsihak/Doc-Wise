@@ -8,11 +8,9 @@ import { Box, Button, Typography } from '@mui/material';
 import Spinner from '../../components/Spinner/Spinner';
 import axios from 'axios';
 
-export default function FileUpload({ isUploadedSuccessful , setIsUploadSuccessful}) {
-    const [uploadedFiles, setUploadedFiles] = useState([]);
+export default function FileUpload({ uploadedFiles, setUploadedFiles, isUploadedSuccessful , setIsUploadSuccessful}) {
     const [fileToDelete, setFileToDelete] = useState(null);
     const [deleteConfirmationOpen, setDeleteConfirmationOpen] = useState(false);
-    const [isDeleteModalOpen, setIsDeleteModalOpen] = useState(false);
     const [isSubmitting, setIsSubmitting] = useState(false);
     const [errorMessage, setErrorMessage] = useState('');
     const [responseMsg, setResponseMsg] = useState('');

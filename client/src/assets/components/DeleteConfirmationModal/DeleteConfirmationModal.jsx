@@ -32,13 +32,13 @@ function DeleteConfirmationModal({ open, onClose, onConfirm, fileToDelete }) {
                     }}
                 >
                     <Typography sx={{ textAlign: 'center' }}>
-                    Are you sure you want to delete
-                    <div className='block'>
-                        <span className="underline text-center font-semibold">
-                        {fileToDelete ? fileToDelete.path : ''}
+                        Are you sure you want to delete
+                        <span className="block">
+                            <span className="underline text-center font-semibold">
+                                {fileToDelete ? fileToDelete.path : ''}
+                            </span>
+                            <span> ?</span>
                         </span>
-                        <span> ?</span>
-                    </div>
                     </Typography>
                     <Box
                     sx={{
