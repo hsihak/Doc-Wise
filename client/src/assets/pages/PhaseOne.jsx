@@ -1,9 +1,12 @@
-import React from 'react'
+import React, {useState} from 'react'
 
-import { Box, Typography } from '@mui/material'
+import { Box, Typography } from '@mui/material';
 import FileUpload from '../containers/FileUpload/FileUpload';
+import Overview from '../components/Overview/Overview';
 
 const PhaseOne = () => {
+
+    const [isUploadedSuccessful, setIsUploadSuccessful] = useState(false);
 
     const handleFileUpload = files => {
         console.log('Uploaded files:', files);
@@ -26,8 +29,20 @@ const PhaseOne = () => {
             sx={{
                 display: 'flex',
                 justifyContent: 'center',
+                alignItems: 'center',
+                flexDirection: 'column',
             }}>
-            <FileUpload onFileUpload={handleFileUpload}/>
+            <FileUpload isUploadedSuccessful={isUploadedSuccessful} setIsUploadSuccessful={setIsUploadSuccessful} />
+
+            {isUploadedSuccessful && (
+                <Box 
+                    sx={{
+                        maxWidth: '65%',
+                    }}
+                >
+                    <Overview areFilesAvailable={isUploadedSuccessful} />
+                </Box>
+            )}
         </Box>
     </div>
   )

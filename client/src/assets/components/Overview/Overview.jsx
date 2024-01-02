@@ -2,6 +2,7 @@ import React, { useState, useEffect } from 'react';
 import Papa from 'papaparse';
 import * as XLSX from 'xlsx';
 import { IoChevronBackCircle } from "react-icons/io5"
+import { Box, Button, Typography } from '@mui/material';
 
 const Overview = ({ areFilesAvailable }) => {
   const [data, setData] = useState([]);
@@ -93,25 +94,46 @@ const Overview = ({ areFilesAvailable }) => {
   };
 
   return (
-    <>
-      <div className="overflow-x-auto flex relative">
-        <IoChevronBackCircle onClick={handlePrevious} className='cursor-pointer flex absolute bottom-1/2'/>
-        <table className='min-w-full table-auto border-collapse border border-gray-300'>
-          <thead className='bg-gray-100'>
-            <tr>
-              {renderTableHeaders()}
-            </tr>
-          </thead>
-          <tbody>
-            {renderTableRows()}
-          </tbody>
-        </table>
-        <IoChevronBackCircle onClick={handlePrevious} className='cursor-pointer flex flex-row-reverse absolute bottom-1/2 right-3/4'/>
-      </div>
+    <div className='w-full'>
+          <Box 
+              sx={{
+                display: 'flex',
+                alignItems: 'center',
+                justifyContent: 'center',
+                width: '60vw',
+                margin: 'auto'
+              }}>
+              <Typography variant='h4'
+                sx={{
+                  paddingBlock: '1rem',
+                  textAlign: 'center',
+                  width: '100%',
+                }}
+              >
+                {currentSlideIndex === 0 ? 'Overview of Threshold Similarity Scores' : 'Overview of Similarity Scores'}
+              </Typography>
+            </Box>
+      <div className="flex items-center">
+        <IoChevronBackCircle onClick={handlePrevious} className='cursor-pointer text-2xl text-blue-500 flex-shrink-0' style={{ flexBasis: '2.5vw' }}/>
+        <div className='flex overflow-auto border border-black rounded-xl'>
+          <div className=''>
+            <table className='w-[60vw] table-auto border-collapse border border-gray-300 relative'>
+              <thead className='bg-gray-100'>
+                <tr>
+                  {renderTableHeaders()}
+                </tr>
+              </thead>
+              <tbody>
+                {renderTableRows()}
+              </tbody>
+            </table>
+          </div>
+        </div>
       {/* <button onClick={handlePrevious}>Previous</button>
       <button onClick={handleNext}>Next</button> */}
-      <p>{currentSlideIndex}</p>
-    </>
+      <IoChevronBackCircle onClick={handleNext} className='cursor-pointer text-2xl text-blue-500 rotate-180 flex-shrink-0' style={{ flexBasis: '2.5vw' }}/>
+      </div>
+    </div>
   );
 }
 
