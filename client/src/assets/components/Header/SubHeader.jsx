@@ -23,10 +23,10 @@ const SubHeader = () => {
           background: 'white',
           width: '100%',
           display: 'flex',
-          borderBottom: 1, // Add a border to create a divider line
-          borderBottomColor: 'grey', // Set the color of the divider line
+          borderBottom: 1, 
+          borderBottomColor: 'grey', 
           '& .MuiTab-root': {
-            flex: 1, // Make each tab take the whole screen width
+            flex: 1, 
             minWidth: 0,
           },
         }}
@@ -53,8 +53,8 @@ const SubHeader = () => {
             '&:hover': {
               backgroundColor: value === 1 ? '#F2A829' : 'inherit',
             },
-            borderLeft: '1px solid black', // Add a black border line to the left
-            borderRight: '1px solid black', // Add a black border line to the right
+            borderLeft: '1px solid black', 
+            borderRight: '1px solid black', 
           }}
         />
         <Tab
