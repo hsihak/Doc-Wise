@@ -23,7 +23,7 @@ def allowed_file(filename):
 def hello_world():
     return "<p>Hello, World!</p>"
 
-@app.route('/upload', methods=['POST'])
+@app.route('/phase-one/upload', methods=['POST'])
 def upload_file():
     if 'file' not in request.files:
         return jsonify({"message": "No file part in the request", "status": "failed"}), 400

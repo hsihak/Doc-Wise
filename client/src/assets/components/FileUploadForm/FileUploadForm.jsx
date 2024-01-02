@@ -1,7 +1,10 @@
 import React from 'react';
 import { Button } from '@mui/material';
 
-function FileUploadForm({ onSubmit, isSubmitting, canCompareSimilarities }) {
+function FileUploadForm({ onSubmit, isSubmitting, canPerformAction, actionType }) {
+
+    const buttonText = actionType === 'compare' ? 'Compare Similarities' : 'Highlight Differences';
+
     return (
         <div className='flex items-center justify-center'>
             <Button 
@@ -22,8 +25,8 @@ function FileUploadForm({ onSubmit, isSubmitting, canCompareSimilarities }) {
                     width: '80%'
                 }}
                 onClick={onSubmit} 
-                disabled={!canCompareSimilarities || isSubmitting}>
-                {isSubmitting ? 'Process...' : 'Compare Similarities'}
+                disabled={!canPerformAction || isSubmitting}>
+                {isSubmitting ? 'Processing...' : buttonText}
             </Button>
         </div>
     );
