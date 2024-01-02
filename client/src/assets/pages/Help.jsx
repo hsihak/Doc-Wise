@@ -1,5 +1,5 @@
 import React from 'react'
-import BackIconPath from '../../../assets/back.svg';
+import BackIconPath from '../../assets/back.svg';
 import {Link} from 'react-router-dom';
 
 const Help = () => {
