@@ -32,13 +32,12 @@ const PhaseOne = () => {
                 alignItems: 'center',
                 flexDirection: 'column',
             }}>
-            <FileUpload setIsUploadSuccessful={setIsUploadSuccessful} />
+            <FileUpload isUploadedSuccessful={isUploadedSuccessful} setIsUploadSuccessful={setIsUploadSuccessful} />
 
             {isUploadedSuccessful && (
                 <Box 
                     sx={{
-                        maxWidth: '60%',
-                        overflow: 'auto',
+                        maxWidth: '65%',
                     }}
                 >
                     <Overview areFilesAvailable={isUploadedSuccessful} />
