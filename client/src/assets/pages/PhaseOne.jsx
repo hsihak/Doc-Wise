@@ -1,7 +1,7 @@
 import React, {useState} from 'react'
 
 import { Box, Typography } from '@mui/material';
-import FileUpload from '../containers/FileUpload/FileUpload';
+import FileUpload from '../containers/phase-one/FileUpload/FileUpload';
 import Overview from '../components/Overview/Overview';
 import DownloadResultFiles from '../components/DownloadResultFiles/DownloadResultFiles';
 

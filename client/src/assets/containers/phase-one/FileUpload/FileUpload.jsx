@@ -1,11 +1,11 @@
 import React, { useState, useEffect } from 'react';
 import { useDropzone } from 'react-dropzone';
-import FileUploadForm from '../../components/FileUploadForm/FileUploadForm';
-import ErrorMessage from '../../components/ErrorMessage/ErrorMessage';
-import DeleteConfirmationModal from '../../components/DeleteConfirmationModal/DeleteConfirmationModal';
-import FileList from '../../components/FileList/FileList';
+import FileUploadForm from '../../../components/FileUploadForm/FileUploadForm';
+import ErrorMessage from '../../../components/ErrorMessage/ErrorMessage';
+import DeleteConfirmationModal from '../../../components/DeleteConfirmationModal/DeleteConfirmationModal';
+import FileList from '../../../components/FileList/FileList';
 import { Box, Button, Typography } from '@mui/material';
-import Spinner from '../../components/Spinner/Spinner';
+import Spinner from '../../../components/Spinner/Spinner';
 import axios from 'axios';
 
 export default function FileUpload({ uploadedFiles, setUploadedFiles, isUploadedSuccessful , setIsUploadSuccessful}) {
@@ -22,7 +22,7 @@ export default function FileUpload({ uploadedFiles, setUploadedFiles, isUploaded
     };
 
     console.log('response message: ', responseMsg);
-    const canCompareSimilarities = uploadedFiles.length >= 2;
+    const canPerformAction = uploadedFiles.length >= 2;
     const isAtLeastOneFileUploaded = uploadedFiles.length === 1;
 
     const {
@@ -100,7 +100,7 @@ export default function FileUpload({ uploadedFiles, setUploadedFiles, isUploaded
           
           console.log(formData)
           
-          const response = await axios.post('http://127.0.0.1:5000/upload', formData);
+          const response = await axios.post('http://127.0.0.1:5000/phase-one/upload', formData);
           
           if (response.status === 201) {
             setResponseMsg({
@@ -222,14 +222,18 @@ export default function FileUpload({ uploadedFiles, setUploadedFiles, isUploaded
         )}
       </Box>
 
-
         {/* Compare Similarities Button */}
         <div className='grid grid-cols-3 mt-5 w-2/4'>
           <div className=' col-span-1/2 place-self-center'>
             <Spinner isSubmitting={isSubmitting}/>
           </div>
           <div className=' col-span-1'>
-            <FileUploadForm onSubmit={handleSubmit} isSubmitting={isSubmitting} canCompareSimilarities={canCompareSimilarities} />
+            <FileUploadForm 
+              onSubmit={handleSubmit} 
+              isSubmitting={isSubmitting} 
+              canPerformAction={canPerformAction} 
+              actionType="compare"
+            />
           </div>
         </div>
 
