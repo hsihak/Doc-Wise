@@ -6,14 +6,16 @@ import DeleteConfirmationModal from '../../components/DeleteConfirmationModal/De
 import FileList from '../../components/FileList/FileList';
 import { Box, Button, Typography } from '@mui/material';
 import Spinner from '../../components/Spinner/Spinner';
+import axios from 'axios';
 
-export default function FileUpload(props) {
+export default function FileUpload({setIsUploadSuccessful}) {
     const [uploadedFiles, setUploadedFiles] = useState([]);
     const [fileToDelete, setFileToDelete] = useState(null);
     const [deleteConfirmationOpen, setDeleteConfirmationOpen] = useState(false);
     const [isDeleteModalOpen, setIsDeleteModalOpen] = useState(false);
     const [isSubmitting, setIsSubmitting] = useState(false);
     const [errorMessage, setErrorMessage] = useState('');
+    const [responseMsg, setResponseMsg] = useState('');
 
     const acceptedFileTypes = {
       'application/pdf': ['.pdf'],
@@ -21,6 +23,7 @@ export default function FileUpload(props) {
       'application/msword': ['.doc']
     };
 
+    console.log('response message: ', responseMsg);
     const canCompareSimilarities = uploadedFiles.length >= 2;
     const isAtLeastOneFileUploaded = uploadedFiles.length === 1;
 
@@ -111,6 +114,8 @@ export default function FileUpload(props) {
               console.log(`Uploading file: ${uploadedFiles[i].name}, Size: ${uploadedFiles[i].size}`);
               formData.append('file', uploadedFiles[i]);
             }
+
+            console.log(formData)
     
             const response = await axios.post('http://127.0.0.1:5000/upload', formData);
       

@@ -94,7 +94,7 @@ const Overview = ({ areFilesAvailable }) => {
 
   return (
     <>
-      <div className="overflow-x-auto flex relative">
+      <div className="relative">
         <IoChevronBackCircle onClick={handlePrevious} className='cursor-pointer flex absolute bottom-1/2'/>
         <table className='min-w-full table-auto border-collapse border border-gray-300'>
           <thead className='bg-gray-100'>
