@@ -10,6 +10,7 @@ CORS(app, supports_credentials=True)
 # Define separate upload folders for each phase
 PHASE_ONE_UPLOAD_FOLDER = '../backend/phase_one/temp_files/'
 PHASE_TWO_UPLOAD_FOLDER = '../backend/phase_two/temp_files/'
+PHASE_THREE_UPLOAD_FOLDER = '../backend/phase_three/temp_files/'
 
 ALLOWED_EXTENSIONS = set(['doc', 'docx', 'pdf'])
 
@@ -22,6 +23,8 @@ def set_upload_folder():
         g.upload_folder = PHASE_ONE_UPLOAD_FOLDER
     elif '/phase-two/' in request.path:
         g.upload_folder = PHASE_TWO_UPLOAD_FOLDER
+    elif '/phase-three' in request.path:
+        g.upload_folder = PHASE_THREE_UPLOAD_FOLDER
     else:
         g.upload_folder = None
 
@@ -35,6 +38,10 @@ def upload_file_phase_one():
 
 @app.route('/phase-two/upload', methods=['POST'])
 def upload_file_phase_two():
+    return handle_upload()
+
+@app.route('/phase-three/upload', methods=['POST'])
+def upload_file_phase_three():
     return handle_upload()
 
 def handle_upload():
@@ -73,6 +80,10 @@ def download_file_phase_one(filename = PHASE_ONE_UPLOAD_FOLDER):
     
 @app.route('/phase-two/download/<filename>', methods=['GET'])
 def download_file_phase_two(filename = PHASE_TWO_UPLOAD_FOLDER):
+    return handle_download(filename)
+
+@app.route('/phase-three/download/<filename>', methods=['GET'])
+def download_file_phase_three(filename = PHASE_THREE_UPLOAD_FOLDER):
     return handle_download(filename)
 
 def handle_download(filename):
