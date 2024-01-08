@@ -1,8 +1,11 @@
 from flask import Flask, request, jsonify, send_from_directory, g
 from werkzeug.utils import secure_filename
 from flask_cors import CORS
+import sys
+sys.path.append('C:/Users/Hangsihak Sin/OneDrive/Documents/School/Doc-Wise/')
 import os
-import urllib.request
+from backend.phase_one.phase_1_senmantic import main as phase_one_main
+from backend.phase_two.phase_2_highlighting import main as phase_two_main
 
 app = Flask(__name__)
 CORS(app, supports_credentials=True)
@@ -34,17 +37,17 @@ def hello_world():
 
 @app.route('/phase-one/upload', methods=['POST'])
 def upload_file_phase_one():
-    return handle_upload()
+    return handle_upload(phase='one')
 
 @app.route('/phase-two/upload', methods=['POST'])
 def upload_file_phase_two():
-    return handle_upload()
+    return handle_upload(phase='two')
 
 @app.route('/phase-three/upload', methods=['POST'])
 def upload_file_phase_three():
-    return handle_upload()
+    return handle_upload(phase='three')
 
-def handle_upload():
+def handle_upload(phase):
     if 'file' not in request.files:
         return jsonify({"message": "No file part in the request", "status": "failed"}), 400
 
@@ -70,6 +73,12 @@ def handle_upload():
         resp.status_code = 207  # Multi-Status
         return resp
     elif success:
+        if phase == 'one':
+            phase_one_main()
+        elif phase == 'two':
+            phase_two_main()
+        # elif phase == 'three':
+        #     phase_three_main()
         return jsonify({"message": "Files successfully uploaded", "status": "success"}), 201
     else:
         return jsonify({"message": "No valid files to upload", "status": "failed"}), 400

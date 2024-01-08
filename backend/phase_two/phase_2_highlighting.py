@@ -373,3 +373,6 @@ def main():
     phasetwo_highlightdifferences = PhaseTwoHighlightDifferences()
 
     # Define file paths and thresholds 
+
+if __name__ == "__main__":
+    main()
