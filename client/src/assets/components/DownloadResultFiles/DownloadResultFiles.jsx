@@ -1,6 +1,6 @@
 import React from 'react';
 
-const DownloadResultFiles = ({ filesPathName }) => {
+const DownloadResultFiles = ({ filesPathName, phaseType }) => {
   return (
     <div className='flex flex-col items-center my-10' style={{ width: '30vw' }}>
       <div className='text-2xl font-bold my-4'>
@@ -13,7 +13,7 @@ const DownloadResultFiles = ({ filesPathName }) => {
           </span>
           <a
             className='bg-[#8AC62D] hover:bg-green-600 text-white py-2 px-4 rounded'
-            href={`http://127.0.0.1:5000/download/${file.path}`}
+            href={`http://127.0.0.1:5000/phase-${phaseType}/download/${file.path}`}
             target="_blank"
             rel="noopener noreferrer"
           >
