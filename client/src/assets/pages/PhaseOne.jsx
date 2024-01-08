@@ -52,7 +52,7 @@ const PhaseOne = () => {
                     </Box>
                 
                     <Box>
-                        <DownloadResultFiles filesPathName={uploadedFiles}/>
+                        <DownloadResultFiles filesPathName={uploadedFiles} phaseType={'one'}/>
                     </Box>
                 </>
 
