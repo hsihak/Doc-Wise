@@ -4,6 +4,8 @@ from docx import Document
 from sentence_transformers import SentenceTransformer, util
 from sklearn.feature_extraction.text import CountVectorizer
 from sklearn.metrics.pairwise import cosine_similarity
+from docx.shared import Pt, RGBColor
+import string
 import torch
 import os
 import PyPDF2
@@ -238,7 +240,7 @@ class PhaseTwoHighlightDifferences:
     # Function to retrieve font styling information from a 'run' in a DOCX document.
     # Returns a dictionary with text content, font name, size, and style attributes (bold, italic, underline).
     # Essential for preserving text styling when processing document content.
-    def read_font_info(run):
+    def read_font_info(self, run):
         return {
             'text': run.text,  # Text content of the run
             'font_name': run.font.name,  # Font name
@@ -250,14 +252,16 @@ class PhaseTwoHighlightDifferences:
 
     # Simplifies handling of font attributes by treating only explicit 'True' as True, else False.
     # Useful in determining precise font styling, particularly when some attributes might be unset (None).
-    def true_false(input):
+    def true_false(self, input):
         return input is True
     
 
     # Function to determine if a specific sentence is highlighted.
     # It compares the sentence against a list of highlighted sentences (los),
     # checking for direct matches or if the sentence is a substring of any highlighted sentence.
-    def sent_highlighted(sentence, los):
+    def sent_highlighted(self, sentence, los):
+
+
         remove = string.punctuation + string.whitespace
         mapping = {ord(c): None for c in remove}
         # check if it's a substring in the metadata
@@ -273,7 +277,7 @@ class PhaseTwoHighlightDifferences:
     # Function to split a block of text into individual sentences.
     # This is particularly useful for processing each sentence separately,
     # like when identifying which sentences to highlight.
-    def split_text_into_sentence_list(text):
+    def split_text_into_sentence_list(self, text):
         sentences = text.split('. ') # need space for cases like "e.g. "
         # Remove empty sentences
         sentences = [sentence.strip() for sentence in sentences if sentence.strip()]
@@ -361,7 +365,7 @@ class PhaseTwoHighlightDifferences:
     def highlight_and_format(self, file_path_A, file_path_B, output_file_path_A, output_file_path_B, threshold):
         # get the list of sentences that are highlighted
         final_path_A, final_path_B = self.get_final_paths(file_path_A, file_path_B)
-        all_sentences_A, all_sentences_B, highlighted_sentences_A, highlighted_sentences_B = get_highlighted_sentences(final_path_A, final_path_B, threshold)
+        all_sentences_A, all_sentences_B, highlighted_sentences_A, highlighted_sentences_B = self.get_highlighted_sentences(final_path_A, final_path_B, threshold)
         docx_a = Document(final_path_A)
         docx_b = Document(final_path_B)
         self.output_paragraphs(output_file_path_A, docx_a, highlighted_sentences_A)
@@ -373,6 +377,17 @@ def main():
     phasetwo_highlightdifferences = PhaseTwoHighlightDifferences()
 
     # Define file paths and thresholds 
+
+    file_path_A = 'C:/Users/Hangsihak Sin/OneDrive/Documents/School/Doc-Wise/backend/phase_two/temp_files/How to Read Vernier_Initial Version.docx'
+    file_path_B = 'C:/Users/Hangsihak Sin/OneDrive/Documents/School/Doc-Wise/backend/phase_two/temp_files/How to Read Vernier_Initial Version.docx'
+
+    output_file_path_A = 'C:/Users/Hangsihak Sin/OneDrive/Documents/School/Doc-Wise/client/src/assets/storage/phase-two/static/highlighted_job_description_A.docx'
+    output_file_path_B = 'C:/Users/Hangsihak Sin/OneDrive/Documents/School/Doc-Wise/client/src/assets/storage/phase-two/static/highlighted_job_description_B.docx'
+
+    # Fixed threshold value
+    threshold = 0.50
+
+    phasetwo_highlightdifferences.highlight_and_format(file_path_A, file_path_B, output_file_path_A, output_file_path_B, threshold)
 
 if __name__ == "__main__":
     main()
