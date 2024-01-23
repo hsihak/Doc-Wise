@@ -70,13 +70,19 @@ def handle_upload(phase):
         errors['message'] = 'Some files were not uploaded'
         errors['status'] = 'partial_success'
         resp = jsonify(errors)
+        
+        # Get threshold value from phase two
+        # threshold = request.json['threshold']
+
+        # print(f'threshold value from phase two: ${threshold}')
+
         resp.status_code = 207  # Multi-Status
         return resp
     elif success:
         if phase == 'one':
             phase_one_main()
         elif phase == 'two':
-            phase_two_main()
+            phase_two_main(threshold)
         # elif phase == 'three':
         #     phase_three_main()
         return jsonify({"message": "Files successfully uploaded", "status": "success"}), 201
